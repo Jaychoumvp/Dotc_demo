@@ -6,6 +6,10 @@ class DefaultConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False  # 是否追踪数据变化
     SQLALCHEMY_ECHO = False  # 是否打印底层执行的SQL
 
+    # redis配置
+    REDIS_HOST = 'localhost'  # ip
+    REDIS_PORT = 6379  # 端口
+
 
 config_dict = {
     'dev': DefaultConfig

@@ -3,11 +3,23 @@ from common.settings.config import config_dict
 from common.utils.constants import EXTRA_ENV_CONFIG
 from flask_sqlalchemy import SQLAlchemy
 from redis import StrictRedis
+import importlib
 
 # 全局 db
 db = SQLAlchemy()
 # 全局 redis_client
 redis_client = None
+
+
+def register_bp(app: Flask):
+    """注册蓝图"""
+    # 进行局部导入, 避免组件没有初始化完成
+    # 由于在代码体中不推荐使用 import app.resources.user as user
+    # 所有我们使用 python 内部的导包函数来导入模块
+    user = importlib.import_module('app.resources.user')
+    app.register_blueprint(user.blueprint)
+
+
 
 
 def register_extensions(app):
@@ -49,7 +61,12 @@ def create_app(type):
 
     # 创建flask应用
     app = create_flask_app(type)
+
     # 组件初始化
     register_extensions(app)
+
+    # 注册蓝图
+    register_bp(app)
+
     return app
 
