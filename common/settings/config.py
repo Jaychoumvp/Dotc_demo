@@ -10,6 +10,11 @@ class DefaultConfig:
     REDIS_HOST = 'localhost'  # ip
     REDIS_PORT = 6379  # 端口
 
+    # JWT
+    JWT_SECRET = 'TPmi4aLWRbyVq8zu9v82dWYW17/z+UvRnYTt4P6fAXA'  # 秘钥
+    JWT_EXPIRE_DAYS = 14  # JWT过期时间
+    JWT_ALGORITHM = 'HS256'  # 加密的算法
+
 
 config_dict = {
     'dev': DefaultConfig

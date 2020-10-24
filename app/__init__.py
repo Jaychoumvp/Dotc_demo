@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from redis import StrictRedis
 import importlib
 from common.utils.converters import MobileConverter
+from flask_migrate import Migrate
 
 # 全局 db
 db = SQLAlchemy()
@@ -38,6 +39,10 @@ def register_extensions(app):
     redis_host = app.config['REDIS_HOST']
     redis_port = app.config['REDIS_PORT']
     redis_client = StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
+
+    Migrate(app, db)
+    # 导入模型所在的模块
+    importlib.import_module('common.models.user')
 
 
 def create_flask_app(type):
