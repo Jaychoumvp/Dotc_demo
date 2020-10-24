@@ -6,12 +6,18 @@ from redis import StrictRedis
 import importlib
 from common.utils.converters import MobileConverter
 from flask_migrate import Migrate
+from common.utils.middlewares import get_user_id
+
 
 # 全局 db
 db = SQLAlchemy()
 # 全局 redis_client
 redis_client = None
 
+
+def register_middlewares(app):
+    """注册中间件"""
+    app.before_request(get_user_id)
 
 def register_converters(app):
     """注册自定义路由转化器"""
@@ -73,6 +79,9 @@ def create_app(type):
 
     # 组件初始化
     register_extensions(app)
+
+    # 注册中间件
+    register_middlewares(app)
 
     # 注册蓝图
     register_bp(app)

@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask_restful import Api
+from app.resources.user.profile import CurrentUserResource
 from common.utils.constants import BASE_URL_PRIFIX
 from .passport import SMSCodeResource, LoginResource
 from common.utils.output import output_json
@@ -16,3 +17,5 @@ api.representation('application/json')(output_json)
 # 添加类视图,绑定路由
 api.add_resource(SMSCodeResource, '/sms/codes/<mob:mobile>')
 api.add_resource(LoginResource, '/authorizations')
+api.add_resource(CurrentUserResource, '/user')
+

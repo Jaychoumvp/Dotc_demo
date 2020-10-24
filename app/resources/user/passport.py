@@ -67,6 +67,6 @@ class LoginResource(Resource):
         db.session.commit()
 
         # 生成jwt
-        token = generate_token({'userid': user.id})
+        token = generate_token({'user_id': user.id})
         # 返回结果
         return {'token': token}, 201
