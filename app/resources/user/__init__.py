@@ -14,4 +14,4 @@ api = Api(blueprint)
 api.representation('application/json')(output_json)
 
 # 添加类视图
-api.add_resource(SMSCodeResource, '/sms/codes')
+api.add_resource(SMSCodeResource, '/sms/codes/<mob:mobile>')

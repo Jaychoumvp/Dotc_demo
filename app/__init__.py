@@ -4,11 +4,17 @@ from common.utils.constants import EXTRA_ENV_CONFIG
 from flask_sqlalchemy import SQLAlchemy
 from redis import StrictRedis
 import importlib
+from common.utils.converters import MobileConverter
 
 # 全局 db
 db = SQLAlchemy()
 # 全局 redis_client
 redis_client = None
+
+
+def register_converters(app):
+    """注册自定义路由转化器"""
+    app.url_map.converters['mob'] = MobileConverter
 
 
 def register_bp(app: Flask):
@@ -18,8 +24,6 @@ def register_bp(app: Flask):
     # 所有我们使用 python 内部的导包函数来导入模块
     user = importlib.import_module('app.resources.user')
     app.register_blueprint(user.blueprint)
-
-
 
 
 def register_extensions(app):
@@ -34,9 +38,6 @@ def register_extensions(app):
     redis_host = app.config['REDIS_HOST']
     redis_port = app.config['REDIS_PORT']
     redis_client = StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
-
-
-
 
 
 def create_flask_app(type):
@@ -61,6 +62,9 @@ def create_app(type):
 
     # 创建flask应用
     app = create_flask_app(type)
+
+    # 注册路由转换器
+    register_converters(app)
 
     # 组件初始化
     register_extensions(app)
