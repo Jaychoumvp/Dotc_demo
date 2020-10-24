@@ -49,6 +49,7 @@ def register_extensions(app):
     Migrate(app, db)
     # 导入模型所在的模块
     importlib.import_module('common.models.user')
+    importlib.import_module('common.models.article')
 
 
 def create_flask_app(type):

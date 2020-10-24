@@ -1,5 +1,7 @@
 from flask import Blueprint
 from flask_restful import Api
+
+from app.resources.user.channel import UserChannelResource
 from app.resources.user.profile import CurrentUserResource
 from common.utils.constants import BASE_URL_PRIFIX
 from .passport import SMSCodeResource, LoginResource
@@ -18,4 +20,4 @@ api.representation('application/json')(output_json)
 api.add_resource(SMSCodeResource, '/sms/codes/<mob:mobile>')
 api.add_resource(LoginResource, '/authorizations')
 api.add_resource(CurrentUserResource, '/user')
-
+api.add_resource(UserChannelResource, '/user/channels')
