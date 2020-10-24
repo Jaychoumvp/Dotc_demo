@@ -1,6 +1,30 @@
 from flask import Flask
 from common.settings.config import config_dict
 from common.utils.constants import EXTRA_ENV_CONFIG
+from flask_sqlalchemy import SQLAlchemy
+from redis import StrictRedis
+
+# 全局 db
+db = SQLAlchemy()
+# 全局 redis_client
+redis_client = None
+
+
+def register_extensions(app):
+    """第三方组件初始化"""
+
+    # 数据库初始化
+    db.init_app(app)
+
+    # redis 初始化
+    global redis_client
+    # 设置 decode_responses=True redis 获取到数据后会自动调用 decode 解码数据
+    redis_host = app.config['REDIS_HOST']
+    redis_port = app.config['REDIS_PORT']
+    redis_client = StrictRedis(host=redis_host, port=redis_port, decode_responses=True)
+
+
+
 
 
 def create_flask_app(type):
@@ -26,5 +50,6 @@ def create_app(type):
     # 创建flask应用
     app = create_flask_app(type)
     # 组件初始化
-
+    register_extensions(app)
     return app
+
