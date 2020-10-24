@@ -32,6 +32,9 @@ def register_bp(app: Flask):
     user = importlib.import_module('app.resources.user')
     app.register_blueprint(user.blueprint)
 
+    article = importlib.import_module('app.resources.article')
+    app.register_blueprint(article.blueprint)
+
 
 def register_extensions(app):
     """第三方组件初始化"""
