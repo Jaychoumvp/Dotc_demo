@@ -43,3 +43,25 @@ class FollowUserResource(Resource):
 
         # 返回结果
         return {'target': author_id}
+
+
+class UnFollowUserResource(Resource):
+    """取消关注用户"""
+    method_decorators = {'delete': [login_required]}
+
+    def delete(self, target):
+        # 获取参数
+        user_id = g.user_id
+
+        # 更新用户关系
+        Relation.query.filter(Relation.user_id == user_id, Relation.author_id == target,
+                              Relation.relation == Relation.RELATION.FOLLOW).update(
+            {'relation': 0, 'update_time': datetime.now()})
+
+        # 让作者的粉丝数量-1
+        User.query.filter(User.id == target).update({'fans_count': User.fans_count - 1})
+        # 让用户的关注数量-1
+        User.query.filter(User.id == user_id).update({'following_count': User.following_count - 1})
+
+        db.session.commit()
+        return {'target': target}
