@@ -95,3 +95,19 @@ class Collection(db.Model):
     user_id = Column(Integer, doc='用户ID')
     article_id = Column(Integer, doc='文章ID')
     is_deleted = Column(Boolean, default=False, doc='是否删除')
+
+
+class Comment(db.Model):
+    """
+    文章评论
+    """
+    __tablename__ = 'news_comment'
+
+    id = Column(Integer, primary_key=True, doc='评论ID')
+    user_id = Column(Integer, doc='用户ID')
+    article_id = Column(Integer, doc='文章ID')
+    parent_id = Column(Integer, doc='被评论的评论id')
+    reply_count = Column(Integer, default=0, doc='回复数')
+    ctime = Column(DateTime, default=datetime.now, doc='创建时间')
+    like_count = Column(Integer, default=0, doc='点赞数')
+    content = Column(String(200), doc='评论内容')
